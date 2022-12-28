@@ -15,13 +15,14 @@ const server = http.createServer((req, res) => {
     console.log(req.url, req.method);
 
     let filePath;
-    if (req.url === '/' || req.url === 'index.html') {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
-        filePath = path.join(__dirname, 'views', 'index.html');
-        fs.readFile(path, 'utf8', (err, data) => {
-            res.end(data);
-        });
+    swicth (req.url) {
+        case '/':
+            res.statusCode = 200;
+            path = path.join(__dirname, 'views', 'index.html');
+            fetch.readFile(path, 'utf8', (err, data) => {
+                res.end(data);
+            });
+            break
     }
 });
 
