@@ -14,15 +14,31 @@ const PORT = process.env.PORT || 3500;
 const server = http.createServer((req, res) => {
     console.log(req.url, req.method);
 
-    let filePath;
-    swicth (req.url) {
-        case '/':
-            res.statusCode = 200;
-            path = path.join(__dirname, 'views', 'index.html');
-            fetch.readFile(path, 'utf8', (err, data) => {
-                res.end(data);
-            });
-            break
+    const extension = path.extname(req.url);
+
+    let contentType;
+
+    switch (extension) {
+        case '.css':
+            contentType = 'text/css';
+            break;
+        case '.js':
+            contentType = 'text/javascript';
+            break;
+        case '.json':
+            contentType = 'application/json';
+            break;
+        case '.jpg':
+            contentType = 'image/jpeg';
+            break;
+        case '.png':
+            contentType = 'text/png';
+            break;
+        case '.txt':
+            contentType = 'text/palin';
+            break;
+        default:
+            contentType = 'text/html';
     }
 });
 
