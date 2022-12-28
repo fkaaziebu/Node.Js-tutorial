@@ -40,6 +40,15 @@ const server = http.createServer((req, res) => {
         default:
             contentType = 'text/html';
     }
+
+    let filePath = 
+        contentType === 'text/html' && req.url === '/'
+            ? path.join(__dirname, 'views', 'index.html')
+            : contentType === 'text/html' && req.url.slice(-1) === '/'
+                ? path.join(__dirname, 'views', 'index.html')
+                : contentType === 'text/html'
+                    ? path.join(__dirname, 'views', req.url)
+                    : path.join(__dirname, req.url);
 });
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
