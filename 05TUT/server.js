@@ -9,7 +9,7 @@ const { parseJSON } = require("date-fns");
 class Emitter extends EventEmitter { };
 // initialize object
 const myEmitter = new Emitter();
-
+myEmitter.on('log', (msg, fileName) => logEvents(msg, fileName))
 const PORT = process.env.PORT || 3500;
 
 const serveFile = async (filePath, contentType, response) => {
@@ -28,6 +28,7 @@ const serveFile = async (filePath, contentType, response) => {
         );
     } catch (err) {
         console.log(err);
+        myEmitter.emit('log', `${err.name}: ${err.message}`, 'errLog.txt');
         response.statusCode = 500;
         response.end();
     }
@@ -35,6 +36,7 @@ const serveFile = async (filePath, contentType, response) => {
 
 const server = http.createServer((req, res) => {
     console.log(req.url, req.method);
+    myEmitter.emit('log', `${req.url}\t${req.method}`, 'reqLog.txt');
 
     const extension = path.extname(req.url);
     let contentType;
@@ -95,10 +97,4 @@ const server = http.createServer((req, res) => {
         } 
     }
 });
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-
-
-
-// myEmitter.on('log', (msg) => logEvents(msg))
-// myEmitter.emit('log', 'Log event emitted');
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
